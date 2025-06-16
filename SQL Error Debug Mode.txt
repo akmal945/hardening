@@ -1,0 +1,32 @@
+SQL Error Debug Mode
+
+<?php
+$persaraanId = $_GET['persaraanId'];
+
+// ✅ Input validation: allow digits only
+if (!ctype_digit($persaraanId)) {
+    die("Invalid ID.");
+}
+
+try {
+    // ✅ Secure PDO connection (disable error display)
+    $pdo = new PDO("mysql:host=localhost;dbname=database", "user", "pass");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // ✅ Use prepared statement to prevent SQL injection
+    $stmt = $pdo->prepare("SELECT * FROM veteran WHERE persaraan_id = ?");
+    $stmt->execute([$persaraanId]);
+
+    // ✅ Safely output results
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo htmlspecialchars($row['nama']) . "<br>";
+    }
+
+} catch (PDOException $e) {
+    // ✅ Log detailed error internally (e.g., to file or syslog)
+    error_log($e->getMessage());
+
+    // ✅ Show a generic error message to avoid leaking details
+    echo "An error occurred. Please try again later.";
+}
+?>
