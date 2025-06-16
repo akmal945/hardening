@@ -1,0 +1,20 @@
+Non-generic message on Forgot ID
+
+<?php
+$userId = $_POST['user_id'];
+
+// Always show a generic response
+$genericMessage = "If the ID exists in our system, we have sent a reset link.";
+
+// Validate format (optional, e.g., only digits or alphanumeric)
+if (preg_match('/^[A-Za-z0-9]{4,}$/', $userId)) {
+    // Silently check and send if valid
+    if (userIdExistsInDatabase($userId)) {
+        sendResetLink($userId); // Silent success
+    }
+    // Optionally log attempts
+}
+
+// Respond generically regardless of outcome
+echo $genericMessage;
+?>
