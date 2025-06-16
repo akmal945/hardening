@@ -1,0 +1,26 @@
+Broken Access Control 
+
+
+ Secure admin.php Code (PHP)
+
+<?php
+// Start the session to access session variables
+session_start();
+
+// 🔒 Check if user is logged in AND has 'admin' role
+if (
+    !isset($_SESSION['user_role']) || 
+    $_SESSION['user_role'] !== 'admin'
+)
+
+ {
+    // 🚫 User is either not logged in or not an admin
+    // Redirect to a friendly unauthorized access page
+    header("Location: unauthorized.php");
+    exit(); // Stop execution
+}
+
+
+// ✅ Authorized – display admin content
+echo "Welcome Admin!";
+?>
