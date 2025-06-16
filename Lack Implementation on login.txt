@@ -1,0 +1,62 @@
+✅ 1. Install Dynamic IP Restrictions Module
+Skip if already installed.
+
+On Windows Server:
+
+Open Server Manager
+
+Go to Manage > Add Roles and Features
+
+Feature: ✔️ Dynamic IP Restrictions
+
+Install & restart IIS
+
+✅ 2. Enable Dynamic IP Restrictions for Your Site
+Open IIS Manager
+
+Select your website
+
+Open “Dynamic IP Restrictions”
+
+On the right, click “Edit Dynamic Restriction Settings”
+
+📋 Recommended Settings:
+
+✅ Deny IP Address based on the number of concurrent requests
+
+Max Concurrent Requests: 5
+
+✅ Deny IP Address based on request rate
+
+Allow: 5 requests
+
+Over: 5 seconds
+
+📌 This blocks an IP that hits login.php 5 times in 5 seconds.
+
+ 3. Enable Response Behavior
+Still in IIS Manager:
+
+Click “Edit Feature Settings…”
+
+✔ Enable Deny Action Type: select Abort or Unauthorized (403)
+
+Optional: Log denied requests for tracking
+
+Path: yourapp\login\web.config
+
+<configuration>
+  <system.webServer>
+    <security>
+      <dynamicIpSecurity enableLoggingOnlyMode="false">
+        <denyByConcurrentRequests enabled="true" maxConcurrentRequests="5" />
+        <denyByRequestRate enabled="true" maxRequests="5" requestIntervalInMilliseconds="5000" />
+      </dynamicIpSecurity>
+    </security>
+  </system.webServer>
+</configuration>
+
+ How to Test
+Use a browser or a script to send many POST requests to login.php in a few seconds.
+After hitting the limit, you’ll get 403 Forbidden or connection reset (based on your deny action setting).
+

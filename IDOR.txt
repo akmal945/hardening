@@ -1,0 +1,21 @@
+IDOR 
+
+<?php
+// ✅ Start the session to access session variables (like user ID)
+session_start();
+
+// ✅ Get the 'id' value from the URL (e.g., ?id=3)
+$id = $_GET['id'];
+
+// ✅ Get the currently logged-in user's ID from the session
+$myId = $_SESSION['user_id'];
+
+// ✅ Check if the requested ID matches the user's own ID
+if ($id != $myId) {
+    // ❌ If user tries to access another ID, block access
+    die("Unauthorized access!");
+}
+
+// ✅ If ID matches, continue safely (e.g., fetch user data)
+echo "Access granted to your own data!";
+?>

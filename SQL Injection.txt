@@ -1,0 +1,143 @@
+SQL Injection
+\
+
+1. vibesstaging.jhev.gov.my
+
+)
+<?php
+$vetid = $_GET['VetTransId'];
+
+// Validate input
+if (!filter_var($vetid, FILTER_VALIDATE_INT)) {
+    die("Invalid ID.");
+}
+
+$conn = new mysqli("localhost", "user", "pass", "dbname");
+
+// Prepare and execute securely
+$stmt = $conn->prepare("SELECT * FROM veteran WHERE VetTransId = ?");
+$stmt->bind_param("i", $vetid);
+$stmt->execute();
+
+$result = $stmt->get_result();
+// Process results
+?>
+)
+
+
+(
+<?php
+// Get the 'VetTransId' parameter from the URL
+$vetid = $_GET['VetTransId'];
+
+// ✅ Step 1: Validate the input to make sure it's a valid integer
+if (!filter_var($vetid, FILTER_VALIDATE_INT)) {
+    // If it's not a valid integer, stop execution and show an error
+    die("Invalid ID.");
+}
+
+// ✅ Step 2: Connect to the MySQL database using MySQLi
+$conn = new mysqli("localhost", "user", "pass", "dbname");
+
+// Check if connection failed
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// ✅ Step 3: Use a prepared statement to prevent SQL injection
+$stmt = $conn->prepare("SELECT * FROM veteran WHERE VetTransId = ?");
+
+// ✅ Step 4: Bind the variable to the placeholder (i = integer)
+$stmt->bind_param("i", $vetid);
+
+// ✅ Step 5: Execute the prepared query
+$stmt->execute();
+
+// ✅ Step 6: Get the result set from the executed statement
+$result = $stmt->get_result();
+
+// ✅ Step 7: Process the result (e.g., loop through rows)
+while ($row = $result->fetch_assoc()) {
+    echo "Veteran Name: " . htmlspecialchars($row['name']) . "<br>";
+    // Add more fields as needed
+}
+
+// ✅ Step 8: Clean up (optional but recommended)
+$stmt->close();
+$conn->close();
+?>
+)
+
+
+
+
+2. aduanvibes.jhev.gov.my
+
+(
+<?php
+$search = $_POST['search']['value'];
+
+// Validate input: contoh benarkan huruf, nombor, space je
+if (!preg_match("/^[a-zA-Z0-9\s]*$/", $search)) {
+    die("Invalid input.");
+}
+
+$conn = new mysqli("localhost", "root", "", "mydb");
+
+// Guna prepared statement
+$stmt = $conn->prepare("SELECT * FROM users WHERE user_name LIKE ?");
+$search_param = "%" . $search . "%";
+$stmt->bind_param("s", $search_param);
+$stmt->execute();
+
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    echo htmlspecialchars($row['user_name']) . "<br>";
+}
+?>
+)
+
+(
+<?php
+// Get the search input from a POST request (e.g. $_POST['search']['value'])
+$search = $_POST['search']['value'];
+
+// ✅ Step 1: Validate input – allow only letters, numbers, and spaces
+// This helps prevent injection or unexpected characters
+if (!preg_match("/^[a-zA-Z0-9\s]*$/", $search)) {
+    die("Invalid input.");
+}
+
+// ✅ Step 2: Connect to MySQL using MySQLi
+$conn = new mysqli("localhost", "root", "", "mydb");
+
+// Check for connection error
+if ($conn->connect_error) {
+    die("Database connection failed: " . $conn->connect_error);
+}
+
+// ✅ Step 3: Use a prepared statement for a LIKE query
+$stmt = $conn->prepare("SELECT * FROM users WHERE user_name LIKE ?");
+
+// Add wildcard characters (%) before and after search term
+$search_param = "%" . $search . "%";
+
+// Bind the parameter (s = string)
+$stmt->bind_param("s", $search_param);
+
+// Execute the query securely
+$stmt->execute();
+
+// ✅ Step 4: Fetch and display results safely
+$result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    // Escape output to prevent XSS
+    echo htmlspecialchars($row['user_name']) . "<br>";
+}
+
+// Optional: Close statement and connection
+$stmt->close();
+$conn->close();
+?>
+)
+

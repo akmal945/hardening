@@ -1,0 +1,18 @@
+web.config
+
+<configuration>
+  <system.webServer>
+    <rewrite>
+      <rules>
+        <rule name="Block Invalid Host Headers" stopProcessing="true">
+          <match url=".*" />
+          <conditions>
+            <!-- Allow only specific trusted domains -->
+            <add input="{HTTP_HOST}" pattern="^(www\.)?yourdomain\.gov\.my$" negate="true" />
+          </conditions>
+          <action type="CustomResponse" statusCode="400" statusReason="Bad Request" statusDescription="Invalid Host Header" />
+        </rule>
+      </rules>
+    </rewrite>
+  </system.webServer>
+</configuration>
