@@ -1,0 +1,16 @@
+web.config 
+
+<configuration>
+  <system.webServer>
+    <security>
+      <requestFiltering>
+        <hiddenSegments>
+          <add segment="web.config" />
+          <add segment=".git" />
+          <add segment=".env" />
+          <add segment=".svn" />
+        </hiddenSegments>
+      </requestFiltering>
+    </security>
+  </system.webServer>
+</configuration>
