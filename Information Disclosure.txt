@@ -1,0 +1,12 @@
+Information Disclosure
+
+<system.webServer>
+  <rewrite>
+    <outboundRules>
+      <rule name="Remove Server Header">
+        <match serverVariable="RESPONSE_Server" pattern=".+" />
+        <action type="Rewrite" value="" />
+      </rule>
+    </outboundRules>
+  </rewrite>
+</system.webServer>
