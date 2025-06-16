@@ -60,3 +60,40 @@ Path: yourapp\login\web.config
 Use a browser or a script to send many POST requests to login.php in a few seconds.
 After hitting the limit, you’ll get 403 Forbidden or connection reset (based on your deny action setting).
 
+----------------------------------------------------------------
+
+<?php
+session_start();
+
+// Initialize failed login attempt counter
+if (!isset($_SESSION['login_attempts'])) {
+    $_SESSION['login_attempts'] = 0;
+    $_SESSION['last_attempt_time'] = time();
+}
+
+// If 5+ failed attempts and less than 15 minutes have passed
+if ($_SESSION['login_attempts'] >= 5 && time() - $_SESSION['last_attempt_time'] < 900) {
+    die("Too many login attempts. Please try again after 15 minutes.");
+}
+
+// Simulated validation example:
+$username = $_POST['username'];
+$password = $_POST['password'];
+
+// Replace with your real login validation logic
+$login_success = ($username === 'admin' && $password === 'pass123');
+
+// If login fails
+if (!$login_success) {
+    $_SESSION['login_attempts']++;
+    $_SESSION['last_attempt_time'] = time();
+    die("Invalid login. Attempt #" . $_SESSION['login_attempts']);
+}
+
+// If login successful, reset counter
+$_SESSION['login_attempts'] = 0;
+
+// Proceed with login...
+echo "Welcome, $username!";
+?>
+
