@@ -1,0 +1,36 @@
+Information via Error Page
+
+1) IIS
+
+<configuration>
+  <system.web>
+    <!-- Enable custom error pages to avoid revealing detailed server errors -->
+    <customErrors mode="On" defaultRedirect="~/error.html">
+      
+      <!-- 404 Not Found -->
+      <error statusCode="404" redirect="~/404.html" />
+
+      <!-- 403 Forbidden -->
+      <error statusCode="403" redirect="~/403.html" />
+
+      <!-- 500 Internal Server Error -->
+      <error statusCode="500" redirect="~/error.html" />
+      
+    </customErrors>
+  </system.web>
+
+Example HTML
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>403 Forbidden</title>
+</head>
+<body>
+  <h2>Access Denied</h2>
+  <p>You do not have permission to access this page.</p>
+</body>
+</html>
+
+
+
