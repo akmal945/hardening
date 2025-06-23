@@ -1,3 +1,4 @@
+
 Information Disclosure
 
 <system.webServer>
@@ -32,3 +33,7 @@ Information Disclosure
     </modules>
   </system.webServer>
 </configuration>
+
+  <rewrite>
+    <outboundRules enabled="true" />
+  </rewrite>
