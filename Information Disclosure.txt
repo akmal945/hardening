@@ -20,3 +20,15 @@ Information Disclosure
         </security>
     </system.webServer>
 </configuration>
+
+<configuration>
+  <system.web>
+    <httpRuntime enableVersionHeader="false" />
+  </system.web>
+
+  <system.webServer>
+    <modules runAllManagedModulesForAllRequests="true">
+      <remove name="X-AspNetMvc-Version"/>
+    </modules>
+  </system.webServer>
+</configuration>
