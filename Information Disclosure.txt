@@ -10,3 +10,13 @@ Information Disclosure
     </outboundRules>
   </rewrite>
 </system.webServer>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <system.webServer>
+        <security>
+            <requestFiltering removeServerHeader="true" />
+        </security>
+    </system.webServer>
+</configuration>
